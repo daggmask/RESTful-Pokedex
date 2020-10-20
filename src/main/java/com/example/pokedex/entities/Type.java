@@ -7,5 +7,8 @@ package com.example.pokedex.entities;
  * @version 1.0
  * @since 10/19/2020
  */
-public class Type {
+public class Type extends BasicInfo {
+    public Type(String name, String url) {
+        super(name, url);
+    }
 }
