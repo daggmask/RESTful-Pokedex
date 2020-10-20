@@ -40,12 +40,14 @@ public class PokemonDto {
     @JsonProperty("Species")
     private Object specie;
 
-    public PokemonDto(String name, int height, int weight, int baseExperience, String location_area_encounter, List<Object> types, List<Object> abilities, List<Object> game_indices, Object species) {
+    public PokemonDto(String name, int height, int weight, int base_experience,
+                      String location_area_encounters, List<Object> types, List<Object> abilities,
+                      List<Object> game_indices, Object species) {
         this.name = name;
         this.height = height;
         this.weight = weight;
-        this.baseExperience = baseExperience;
-        this.locationEncounter = location_area_encounter;
+        this.baseExperience = base_experience;
+        this.locationEncounter = location_area_encounters;
         this.types = types;
         this.abilities = abilities;
         this.games = game_indices;

@@ -57,6 +57,7 @@ public class PokemonService {
             System.out.println("Pokemon not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found");
         }
+       // pokemonRepository.save(new Pokemon(pokemons));
         return pokemons;
     }
 
