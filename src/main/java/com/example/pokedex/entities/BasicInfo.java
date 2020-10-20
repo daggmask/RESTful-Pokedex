@@ -7,9 +7,12 @@ package com.example.pokedex.entities;
  * @version 1.0
  * @since 10/19/2020
  */
-public  class BasicInfo {
-    private String name;
-    private String url;
+public class BasicInfo {
+    public String name;
+    public String url;
+
+    public BasicInfo() {
+    }
 
     public BasicInfo(String name, String url) {
         this.name = name;
