@@ -7,7 +7,7 @@ package com.example.pokedex.entities;
  * @version 1.0
  * @since 10/19/2020
  */
-public abstract class BasicInfo {
+public  class BasicInfo {
     private String name;
     private String url;
 

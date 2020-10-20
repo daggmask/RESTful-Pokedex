@@ -26,6 +26,9 @@ public class Pokemon {
     private List<Game> games;
     private Specie specie;
 
+    public Pokemon() {
+    }
+
     public Pokemon(@NotNull String name, int height, int weight,
                    int baseExperience, String locationEncounter, List<Type> types,
                    List<Ability> abilities, List<Game> games, Specie specie) {
