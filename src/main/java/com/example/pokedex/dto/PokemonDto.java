@@ -32,17 +32,17 @@ public class PokemonDto {
     @JsonProperty("Location Encounter")
     private String locationEncounter;
     @JsonProperty("Types")
-    private List<Object> types;
+    private List<Type> types;
     @JsonProperty("Abilities")
-    private List<Object> abilities;
-    @JsonProperty("Games Yes here should be named games_indices")
-    private List<Object> games;
+    private List<Ability> abilities;
+    @JsonProperty("Games implemented")
+    private List<Game> games;
     @JsonProperty("Species")
-    private Object specie;
+    private Specie specie;
 
     public PokemonDto(String name, int height, int weight, int base_experience,
-                      String location_area_encounters, List<Object> types, List<Object> abilities,
-                      List<Object> game_indices, Object species) {
+                      String location_area_encounters, List<Type> types, List<Ability> abilities,
+                      List<Game> game_indices, Specie species) {
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -94,35 +94,35 @@ public class PokemonDto {
         this.locationEncounter = locationEncounter;
     }
 
-    public List<Object> getTypes() {
+    public List<Type> getTypes() {
         return types;
     }
 
-    public void setTypes(List<Object> types) {
+    public void setTypes(List<Type> types) {
         this.types = types;
     }
 
-    public List<Object> getAbilities() {
+    public List<Ability> getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(List<Object> abilities) {
+    public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
     }
 
-    public List<Object> getGames() {
+    public List<Game> getGames() {
         return games;
     }
 
-    public void setGames(List<Object> games) {
+    public void setGames(List<Game> games) {
         this.games = games;
     }
 
-    public Object getSpecie() {
+    public Specie getSpecie() {
         return specie;
     }
 
-    public void setSpecie(Object specie) {
+    public void setSpecie(Specie specie) {
         this.specie = specie;
     }
 }

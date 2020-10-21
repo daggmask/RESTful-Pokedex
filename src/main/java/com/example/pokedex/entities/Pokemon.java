@@ -23,15 +23,15 @@ public class Pokemon {
     private int weight;
     private int baseExperience;
     private String locationEncounter;
-    private List<Object> types;
-    private List<Object> abilities;
-    private List<Object> games;
-    private Object specie;
+    private List<Type> types;
+    private List<Ability> abilities;
+    private List<Game> games;
+    private Specie specie;
 
     public Pokemon() {
     }
 
-    public Pokemon(@NotNull String name, int height, int weight, int baseExperience, String locationEncounter, List<Object> types, List<Object> abilities, List<Object> games, Object specie) {
+    public Pokemon(@NotNull String name, int height, int weight, int baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities, List<Game> games, Specie specie) {
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -91,35 +91,35 @@ public class Pokemon {
         this.locationEncounter = locationEncounter;
     }
 
-    public List<Object> getTypes() {
+    public List<Type> getTypes() {
         return types;
     }
 
-    public void setTypes(List<Object> types) {
+    public void setTypes(List<Type> types) {
         this.types = types;
     }
 
-    public List<Object> getAbilities() {
+    public List<Ability> getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(List<Object> abilities) {
+    public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
     }
 
-    public List<Object> getGames() {
+    public List<Game> getGames() {
         return games;
     }
 
-    public void setGames(List<Object> games) {
+    public void setGames(List<Game> games) {
         this.games = games;
     }
 
-    public Object getSpecie() {
+    public Specie getSpecie() {
         return specie;
     }
 
-    public void setSpecie(Object specie) {
+    public void setSpecie(Specie specie) {
         this.specie = specie;
     }
 }

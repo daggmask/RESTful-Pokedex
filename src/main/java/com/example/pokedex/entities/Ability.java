@@ -1,7 +1,5 @@
 package com.example.pokedex.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * <Description>
  *
@@ -11,22 +9,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Ability{
     public BasicInfo ability;
-    public Boolean isHidden;
+    public Boolean is_hidden;
 
     public Ability() {
         super();
     }
 
-    public Ability(String name, String url, Boolean isHidden) {
+    public Ability(String name, String url, Boolean is_hidden) {
         this.ability = new BasicInfo(name,url);
-        this.isHidden = isHidden;
+        this.is_hidden = is_hidden;
     }
 
     public Boolean getHidden() {
-        return isHidden;
+        return is_hidden;
     }
 
     public void setHidden(Boolean hidden) {
-        isHidden = hidden;
+        is_hidden = hidden;
     }
 }

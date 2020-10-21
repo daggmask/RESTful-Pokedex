@@ -42,6 +42,29 @@ public class PokemonService {
     public List<Pokemon> findPokemonByName(String name, String type){
         var pokemons = pokemonRepository.findAll();
         pokemons = pokemons.stream().filter(pokemon -> pokemon.getName().contains(name)).collect(Collectors.toList());
+
+/*        pokemons = pokemons.stream()
+                .filter(pokemon -> pokemon.getName().contains(name))
+                .filter(pokemon -> pokemon.getTypes().stream()
+                .anyMatch(pokeType -> pokeType.getType().name.contains(type))
+        ).collect(Collectors.toList());*/
+
+        try{
+            if(type != null && !pokemons.isEmpty()){
+                List<Pokemon> pokemonsFilteredByType = pokemons;
+                pokemonsFilteredByType.forEach(pokemon -> {
+                    pokemon.getTypes().forEach(pokemonType -> {
+                        if (!pokemonType.getType().name.equals(type)){
+                            pokemonsFilteredByType.remove(pokemon);
+                        }
+                    });
+                });
+                pokemons = pokemonsFilteredByType;
+            }
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by search: name = %s and type = %s",name,type));
+        }
+
         if(pokemons.isEmpty()){
             var pokemonDto = pokemonConsumerService.findPokemonByName(name);
             if(pokemonDto != null){
@@ -53,7 +76,9 @@ public class PokemonService {
                 pokemons.add(pokemon);
             }
         }
-        System.out.println(pokemons.size());
+        if(pokemons.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by search: name = %s and type = %s",name,type));
+        }
         return pokemons;
     }
 

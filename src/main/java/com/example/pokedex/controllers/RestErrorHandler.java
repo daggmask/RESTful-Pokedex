@@ -16,8 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 @ControllerAdvice
 public class RestErrorHandler {
 
-    @ExceptionHandler(ResponseStatusException.class)
+/*    @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<String> handleNotFound(ResponseStatusException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pokemon doesn't exist");
-    }
+    }*/
 }
