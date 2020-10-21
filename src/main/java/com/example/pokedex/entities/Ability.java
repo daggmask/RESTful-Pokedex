@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Ability{
     public BasicInfo ability;
-    @JsonProperty("is_hidden")
     public Boolean isHidden;
 
     public Ability() {

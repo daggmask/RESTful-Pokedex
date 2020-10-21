@@ -1,6 +1,7 @@
 package com.example.pokedex.entities;
 
 import com.example.pokedex.dto.PokemonDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
@@ -30,16 +31,16 @@ public class Pokemon {
     public Pokemon() {
     }
 
-    public Pokemon(PokemonDto pokemon) {
-        this.name = pokemon.getName();
-        this.height = pokemon.getHeight();
-        this.weight = pokemon.getWeight();
-        this.baseExperience = pokemon.getBaseExperience();
-        this.locationEncounter = pokemon.getLocationEncounter();
-        this.types = pokemon.getTypes();
-        this.abilities = pokemon.getAbilities();
-        this.games = pokemon.getGames();
-        this.specie = pokemon.getSpecie();
+    public Pokemon(@NotNull String name, int height, int weight, int baseExperience, String locationEncounter, List<Object> types, List<Object> abilities, List<Object> games, Object specie) {
+        this.name = name;
+        this.height = height;
+        this.weight = weight;
+        this.baseExperience = baseExperience;
+        this.locationEncounter = locationEncounter;
+        this.types = types;
+        this.abilities = abilities;
+        this.games = games;
+        this.specie = specie;
     }
 
     public String getPokemonID() {

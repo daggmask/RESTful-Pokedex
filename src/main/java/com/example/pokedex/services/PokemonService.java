@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <CRUD operations, service for pokemon entities>
@@ -26,6 +27,9 @@ public class PokemonService {
     @Autowired
     private PokemonRepository pokemonRepository;
 
+    @Autowired
+    private PokemonConsumerService pokemonConsumerService;
+
     private final RestTemplate restTemplate;
 
     private final static String POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/";
@@ -35,63 +39,48 @@ public class PokemonService {
     }
 
     //Read
-    public PokemonDto findPokemonByName(String name){
-        if(name == null){
-            return (PokemonDto) findAll();
+    public List<Pokemon> findPokemonByName(String name, String type){
+        var pokemons = pokemonRepository.findAll();
+        pokemons = pokemons.stream().filter(pokemon -> pokemon.getName().contains(name)).collect(Collectors.toList());
+        if(pokemons.isEmpty()){
+            var pokemonDto = pokemonConsumerService.findPokemonByName(name);
+            if(pokemonDto != null){
+                System.out.println(pokemonDto.getName());
+                var pokemon = new Pokemon(pokemonDto.getName(),pokemonDto.getHeight(),
+                        pokemonDto.getWeight(),pokemonDto.getBaseExperience(),pokemonDto.getLocationEncounter(),
+                        pokemonDto.getTypes(),pokemonDto.getAbilities(),pokemonDto.getGames(),pokemonDto.getSpecie());
+                this.savePokemon(pokemon);
+                pokemons.add(pokemon);
+            }
         }
-
-        var pokemonInDB = pokemonRepository.findByName(name).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by name: %s", name)));
-        if(pokemonInDB.size() != 0){
-            return (PokemonDto) pokemonInDB;
-        }
-
-        var pokemonURLQuery = POKEMON_URL + name;
-        System.out.println(pokemonURLQuery);
-        var pokemons = restTemplate.getForObject(pokemonURLQuery, PokemonDto.class);
-
-        if(pokemons != null){
-            System.out.println(pokemons.getName());
-        }
-        else{
-            System.out.println("Pokemon not found");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found");
-        }
-       // pokemonRepository.save(new Pokemon(pokemons));
+        System.out.println(pokemons.size());
         return pokemons;
     }
 
     //Read
-    public List<Pokemon> findAll(){
-        return pokemonRepository.findAll();
+    public Pokemon findById(String id){
+        return pokemonRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by id: %s", id)));
     }
 
     //Create
-    public ResponseEntity<String> savePokemon(Pokemon pokemon){
-        if(pokemon == null){
-            return ResponseEntity.status(406).body("Body required");
-        }
-        pokemonRepository.save(pokemon);
-        return ResponseEntity.ok("Save successful");
+    public Pokemon savePokemon(Pokemon pokemon){
+        return pokemonRepository.save(pokemon);
     }
 
     //Update
-    public ResponseEntity<String> updatePokemon(String id, Pokemon pokemon) {
+    public void updatePokemon(String id, Pokemon pokemon) {
         if (!pokemonRepository.existsById(id)) {
-            return ResponseEntity.status(400).body(String.format("No pokemon found by id: %s", id));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by id: %s", id));
         }
         pokemon.setPokemonID(id);
         pokemonRepository.save(pokemon);
-        return ResponseEntity.ok(String.format("Update successful for pokemon: %s", pokemon.getName()));
     }
 
     //Delete
-    public ResponseEntity<String> deletePokemon(String id){
+    public void deletePokemon(String id){
         if (!pokemonRepository.existsById(id)) {
-            return ResponseEntity.status(400).body(String.format("No pokemon found by id: %s", id));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by id: %s", id));
         }
-        var pokemon = pokemonRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found"));
         pokemonRepository.deleteById(id);
-        return ResponseEntity.ok(String.format("Update successful for pokemon: %s", pokemon.getName()));
     }
 }

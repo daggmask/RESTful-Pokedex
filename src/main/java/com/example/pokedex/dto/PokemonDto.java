@@ -35,7 +35,7 @@ public class PokemonDto {
     private List<Object> types;
     @JsonProperty("Abilities")
     private List<Object> abilities;
-    @JsonProperty("Games Implementation")
+    @JsonProperty("Games Yes here should be named games_indices")
     private List<Object> games;
     @JsonProperty("Species")
     private Object specie;
