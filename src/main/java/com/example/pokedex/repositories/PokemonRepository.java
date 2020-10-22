@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface PokemonRepository extends MongoRepository<Pokemon,String> {
-    Optional<List<Pokemon>> findByName(String name);
+    Optional<Pokemon> findByName(String name);
 }

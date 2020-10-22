@@ -39,7 +39,7 @@ public class PokemonStartup {
         if(allPokemons != null){
             var list  = allPokemons.getResults();
             var alreadyInDB = basicInfoRepository.findAll();
-            if(!alreadyInDB.isEmpty()){
+            if(alreadyInDB.isEmpty()){
                 basicInfoRepository.saveAll(list);
             }
         }
