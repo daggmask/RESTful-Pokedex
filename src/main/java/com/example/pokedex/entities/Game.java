@@ -1,5 +1,7 @@
 package com.example.pokedex.entities;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * <Description>
  *
@@ -8,7 +10,6 @@ package com.example.pokedex.entities;
  * @since 10/19/2020
  */
 public class Game {
-
     public BasicInfo version;
     public int game_index;
 

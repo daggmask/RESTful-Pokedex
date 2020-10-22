@@ -8,6 +8,7 @@ package com.example.pokedex.entities;
  * @since 10/19/2020
  */
 public class Type{
+
     private BasicInfo type;
 
     public Type() {

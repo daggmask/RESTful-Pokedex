@@ -1,5 +1,7 @@
 package com.example.pokedex.entities;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * <Description>
  *
@@ -8,6 +10,8 @@ package com.example.pokedex.entities;
  * @since 10/19/2020
  */
 public class Ability{
+    @Id
+    private String id;
     public BasicInfo ability;
     public Boolean is_hidden;
 

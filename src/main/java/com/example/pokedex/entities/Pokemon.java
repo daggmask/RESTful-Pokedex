@@ -17,7 +17,6 @@ import java.util.List;
 public class Pokemon {
     @Id
     private String pokemonID;
-    @NotNull
     private String name;
     private int height;
     private int weight;

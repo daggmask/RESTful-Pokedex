@@ -1,5 +1,7 @@
 package com.example.pokedex.entities;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * <Description>
  *

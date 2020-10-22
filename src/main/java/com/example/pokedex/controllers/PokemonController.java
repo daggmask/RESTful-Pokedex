@@ -1,6 +1,5 @@
 package com.example.pokedex.controllers;
 
-import com.example.pokedex.dto.PokemonDto;
 import com.example.pokedex.entities.Pokemon;
 import com.example.pokedex.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/pokedex")
 public class PokemonController {
+
     @Autowired
     private PokemonService pokemonService;
+
 
     @GetMapping
     public ResponseEntity<List<Pokemon>> findPokemonByNameAndType(@RequestParam String name, @RequestParam(required = false) String type){

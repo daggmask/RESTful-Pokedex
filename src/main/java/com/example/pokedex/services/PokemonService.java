@@ -1,16 +1,14 @@
 package com.example.pokedex.services;
 
-import com.example.pokedex.dto.PokemonDto;
 import com.example.pokedex.entities.Pokemon;
+import com.example.pokedex.repositories.BasicInfoRepository;
 import com.example.pokedex.repositories.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,18 +28,14 @@ public class PokemonService {
     @Autowired
     private PokemonConsumerService pokemonConsumerService;
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private BasicInfoRepository basicInfoRepository;
 
-    private final static String POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/";
-
-    public PokemonService(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
-    }
 
     //Read
     public List<Pokemon> findPokemonByName(String name, String type){
-        var pokemons = pokemonRepository.findAll();
-        pokemons = pokemons.stream().filter(pokemon -> pokemon.getName().contains(name)).collect(Collectors.toList());
+/*        var pokemons = pokemonRepository.findAll();
+        pokemons = pokemons.stream().filter(pokemon -> pokemon.getName().contains(name)).collect(Collectors.toList());*/
 
 /*        pokemons = pokemons.stream()
                 .filter(pokemon -> pokemon.getName().contains(name))
@@ -49,7 +43,7 @@ public class PokemonService {
                 .anyMatch(pokeType -> pokeType.getType().name.contains(type))
         ).collect(Collectors.toList());*/
 
-        try{
+/*        try{
             if(type != null && !pokemons.isEmpty()){
                 List<Pokemon> pokemonsFilteredByType = pokemons;
                 pokemonsFilteredByType.forEach(pokemon -> {
@@ -63,10 +57,9 @@ public class PokemonService {
             }
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by search: name = %s and type = %s",name,type));
-        }
+        }*/
 
-        if(pokemons.isEmpty()){
-            var pokemonDto = pokemonConsumerService.findPokemonByName(name);
+/*            var pokemonDto = pokemonConsumerService.findPokemonByName(name);
             if(pokemonDto != null){
                 System.out.println(pokemonDto.getName());
                 var pokemon = new Pokemon(pokemonDto.getName(),pokemonDto.getHeight(),
@@ -75,11 +68,25 @@ public class PokemonService {
                 this.savePokemon(pokemon);
                 pokemons.add(pokemon);
             }
-        }
         if(pokemons.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by search: name = %s and type = %s",name,type));
-        }
-        return pokemons;
+        }*/
+
+        var pokemons = basicInfoRepository.findAll();
+        pokemons = pokemons.stream().filter(pokemon -> pokemon.getName().contains(name)).collect(Collectors.toList());
+        System.out.println(pokemons.get(0).getName());
+
+        var pokemonsWithDetail = new ArrayList<Pokemon>();
+
+        pokemons.forEach(pokemon -> {
+            var pokemonDto = pokemonConsumerService.findPokemonByName(pokemon.getName());
+            var pokemonWithDetail = new Pokemon(pokemonDto.getName(),pokemonDto.getHeight(),
+                    pokemonDto.getWeight(),pokemonDto.getBaseExperience(),pokemonDto.getLocationEncounter(),
+                    pokemonDto.getTypes(),pokemonDto.getAbilities(),pokemonDto.getGames(),pokemonDto.getSpecie());
+            this.savePokemon(pokemonWithDetail);
+            pokemonsWithDetail.add(pokemonWithDetail);
+        });
+        return pokemonsWithDetail;
     }
 
     //Read
