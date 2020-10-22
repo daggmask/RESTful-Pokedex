@@ -93,6 +93,7 @@ public class PokemonService {
             var pokemonWithDetail = new Pokemon(pokemonDto.getName(),pokemonDto.getHeight(),
                     pokemonDto.getWeight(),pokemonDto.getBaseExperience(),pokemonDto.getLocationEncounter(),
                     pokemonDto.getTypes(),pokemonDto.getAbilities(),pokemonDto.getGames(),pokemonDto.getSpecie());
+
             var pokemonExistInDB = pokemonInDBMatchingDto(pokemonDto);
             if(!pokemonExistInDB){
                 this.savePokemon(pokemonWithDetail);
