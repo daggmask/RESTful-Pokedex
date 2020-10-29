@@ -5,6 +5,7 @@ import com.example.pokedex.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -35,11 +36,13 @@ public class PokemonController {
     }
 
     @GetMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Pokemon> findPokemonById(@PathVariable String id){
         return ResponseEntity.ok(pokemonService.findById(id));
     }
 
     @PostMapping
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Pokemon> savePokemon(@RequestBody Pokemon pokemon){
         var savedPokemon = pokemonService.savePokemon(pokemon);
         var uri = URI.create("/api/v1/pokedex" + savedPokemon.getPokemonID());
@@ -47,12 +50,14 @@ public class PokemonController {
     }
 
     @PutMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePokemon(@PathVariable String id, @RequestBody Pokemon pokemon){
         pokemonService.updatePokemon(id,pokemon);
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePokemon(@PathVariable String id){
         pokemonService.deletePokemon(id);
