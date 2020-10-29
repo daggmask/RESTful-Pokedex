@@ -54,6 +54,11 @@ public class UserService {
     public void update(String id, User user) {
         if(!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the user by id %s.", id));
+        }else{
+            User foundUser = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the user by id %s.", id)));
+            if(!foundUser.getName().equals(user.getName())){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't change other's user information");
+            }
         }
         user.setId(id);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -36,7 +36,6 @@ public class PokemonController {
     }
 
     @GetMapping("/{id}")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<Pokemon> findPokemonById(@PathVariable String id){
         return ResponseEntity.ok(pokemonService.findById(id));
     }
@@ -50,8 +49,8 @@ public class PokemonController {
     }
 
     @PutMapping("/{id}")
-    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Secured("ROLE_ADMIN")
     public void updatePokemon(@PathVariable String id, @RequestBody Pokemon pokemon){
         pokemonService.updatePokemon(id,pokemon);
     }
