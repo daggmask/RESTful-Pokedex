@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface PokemonRepository extends MongoRepository<Pokemon,String> {
     Optional<Pokemon> findByName(String name);
+
+    //Perhaps add additional queries i.e weight and height?
 }

@@ -27,7 +27,8 @@ public class PokemonController {
 
 
     @GetMapping
-    public ResponseEntity<List<Pokemon>> findPokemonByNameAndType(@RequestParam String name, @RequestParam(required = false) String type){
+    public ResponseEntity<List<Pokemon>> findPokemonByNameAndType(@RequestParam String name,
+                                                                  @RequestParam(required = false) String type){
         var pokemon = pokemonService.findPokemonByName(name, type);
         if(pokemon.isEmpty()){
             return ResponseEntity.status(404).body(pokemon);
