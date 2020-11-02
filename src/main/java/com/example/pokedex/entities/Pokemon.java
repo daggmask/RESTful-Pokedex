@@ -2,6 +2,7 @@ package com.example.pokedex.entities;
 
 import com.example.pokedex.dto.PokemonDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
@@ -28,6 +29,10 @@ public class Pokemon {
     private Specie specie;
 
     public Pokemon() {
+    }
+
+    public Pokemon(String name) {
+        this.name = name;
     }
 
     public Pokemon(@NotNull String name, int height, int weight, int baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities, List<Game> games, Specie specie) {
