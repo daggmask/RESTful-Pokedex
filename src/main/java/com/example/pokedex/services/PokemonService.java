@@ -32,9 +32,11 @@ public class PokemonService {
     @Autowired
     private BasicInfoRepository basicInfoRepository;
 
-
     //Read
     public List<Pokemon> findPokemonByName(String name, String type){
+        if(name == null && type == null){
+            return pokemonRepository.findAll();
+        }
         if(name != null && type != null){
             var listFromDB = this.pokemonInDBCheckWithNameAndType(name,type);
             if(!listFromDB.isEmpty()){
