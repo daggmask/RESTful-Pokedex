@@ -37,21 +37,11 @@ public class PokemonService {
         if(name == null && type == null){
             return pokemonRepository.findAll();
         }
-        if(name != null && type != null){
-            var listFromDB = this.pokemonInDBCheckWithNameAndType(name,type);
-            if(!listFromDB.isEmpty()){
-                return listFromDB;
-            }
+        var pokemonList = this.pokemonInDBCheckWithName(name);
+        if(type != null){
+            pokemonList = filterPokemonsByNameAndType(name,type,pokemonList);
         }
-        else if(name != null){
-            var listFromDB = this.pokemonInDBCheckWithName(name);
-            if(!listFromDB.isEmpty()){
-                return listFromDB;
-            }
-        }
-        var pokemonData = this.getPokemonFromAPIAndSave(name);
-
-        return pokemonData;
+        return  pokemonList;
     }
 
     //Read
@@ -118,21 +108,22 @@ public class PokemonService {
                 .filter(pokemon -> pokemon.getName().toLowerCase().contains(name))
                 .collect(Collectors.toList());
         if(pokemonsListedInDB.isEmpty()){
+            pokemonsListedInDB = this.getPokemonFromAPIAndSave(name);
+        }
+        if(pokemonsListedInDB.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by name: %s", name));
         }
         return pokemonsListedInDB;
     }
 
-    private List<Pokemon> pokemonInDBCheckWithNameAndType(String name, String type){
-        var pokemonsListedInDB = pokemonRepository.findAll();
-        pokemonsListedInDB = pokemonsListedInDB.stream()
-                .filter(pokemon -> pokemon.getName().toLowerCase().contains(name))
+    private List<Pokemon> filterPokemonsByNameAndType(String name, String type, List<Pokemon> pokemonList){
+        pokemonList = pokemonList.stream()
                 .filter(pokemon -> pokemon.getTypes().stream().anyMatch(pokeType -> pokeType.getType().name.toLowerCase().contains(type)))
                 .collect(Collectors.toList());
-        if(pokemonsListedInDB.isEmpty()){
+        if(pokemonList.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by name: %s and type: %s", name, type));
         }
-        return pokemonsListedInDB;
+        return pokemonList;
 
     }
 }
