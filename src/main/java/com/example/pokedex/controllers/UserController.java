@@ -28,17 +28,20 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<List<User>> findAllUsers(@RequestParam(required = false) String username) {
         var users = userService.findAll(username);
         return ResponseEntity.ok(users);
     }
 
     @PostMapping
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<User> saveUser(@Validated @RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));
     }
 
     @PutMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable String id, @Validated @RequestBody User user) {
         userService.update(id, user);

@@ -139,7 +139,6 @@ public class PokemonService {
         if(pokemonList.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by ability: %s", ability));
         }
-        System.out.println(pokemonList.size());
         return pokemonList;
     }
 
@@ -150,7 +149,6 @@ public class PokemonService {
         if(pokemonList.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by game: %s", game));
         }
-        System.out.println(pokemonList.size());
         return pokemonList;
     }
 }
