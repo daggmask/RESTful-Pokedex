@@ -33,13 +33,20 @@ public class PokemonService {
     private BasicInfoRepository basicInfoRepository;
 
     //Read
-    public List<Pokemon> findPokemonByName(String name, String type){
-        if(name == null && type == null){
-            return pokemonRepository.findAll();
+    public List<Pokemon> findPokemonByName(String name, String type, String ability, String game){
+
+        var pokemonList = pokemonRepository.findAll();
+        if(name != null) {
+            pokemonList = this.filterPokemonsByName(name, pokemonList);
         }
-        var pokemonList = this.pokemonInDBCheckWithName(name);
         if(type != null){
-            pokemonList = filterPokemonsByNameAndType(name,type,pokemonList);
+            pokemonList = filterPokemonsByType(type,pokemonList);
+        }
+        if(ability != null){
+            pokemonList = filterPokemonsByAbility(ability, pokemonList);
+        }
+        if(game != null){
+            pokemonList = filterPokemonsByGame(game, pokemonList);
         }
         return  pokemonList;
     }
@@ -102,28 +109,48 @@ public class PokemonService {
         return !pokemonExistInDB.isEmpty();
     }
 
-    private List<Pokemon> pokemonInDBCheckWithName(String name){
-        var pokemonsListedInDB = pokemonRepository.findAll();
-        pokemonsListedInDB = pokemonsListedInDB.stream()
+    private List<Pokemon> filterPokemonsByName(String name, List<Pokemon> pokemonList){
+        pokemonList = pokemonList.stream()
                 .filter(pokemon -> pokemon.getName().toLowerCase().contains(name))
                 .collect(Collectors.toList());
-        if(pokemonsListedInDB.isEmpty()){
-            pokemonsListedInDB = this.getPokemonFromAPIAndSave(name);
+        if(pokemonList.isEmpty()){
+            pokemonList = this.getPokemonFromAPIAndSave(name);
         }
-        if(pokemonsListedInDB.isEmpty()){
+        if(pokemonList.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by name: %s", name));
         }
-        return pokemonsListedInDB;
+        return pokemonList;
     }
 
-    private List<Pokemon> filterPokemonsByNameAndType(String name, String type, List<Pokemon> pokemonList){
+    private List<Pokemon> filterPokemonsByType( String type, List<Pokemon> pokemonList){
         pokemonList = pokemonList.stream()
                 .filter(pokemon -> pokemon.getTypes().stream().anyMatch(pokeType -> pokeType.getType().name.toLowerCase().contains(type)))
                 .collect(Collectors.toList());
         if(pokemonList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by name: %s and type: %s", name, type));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by type: %s", type));
         }
         return pokemonList;
+    }
 
+    private List<Pokemon> filterPokemonsByAbility( String ability, List<Pokemon> pokemonList){
+        pokemonList = pokemonList.stream()
+                .filter(pokemon -> pokemon.getAbilities().stream().anyMatch(pokeAbility -> pokeAbility.ability.name.toLowerCase().contains(ability)))
+                .collect(Collectors.toList());
+        if(pokemonList.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by ability: %s", ability));
+        }
+        System.out.println(pokemonList.size());
+        return pokemonList;
+    }
+
+    private List<Pokemon> filterPokemonsByGame( String game, List<Pokemon> pokemonList){
+        pokemonList = pokemonList.stream()
+                .filter(pokemon -> pokemon.getGames().stream().anyMatch(pokeGame -> pokeGame.version.name.toLowerCase().contains(game)))
+                .collect(Collectors.toList());
+        if(pokemonList.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No pokemon found by game: %s", game));
+        }
+        System.out.println(pokemonList.size());
+        return pokemonList;
     }
 }
