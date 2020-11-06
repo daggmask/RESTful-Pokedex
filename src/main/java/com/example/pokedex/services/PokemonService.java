@@ -33,7 +33,7 @@ public class PokemonService {
     private BasicInfoRepository basicInfoRepository;
 
     //Read
-    public List<Pokemon> findPokemonByName(String name, String type, String ability, String game){
+    public List<Pokemon> findPokemonByParams(String name, String type, String ability, String game){
 
         var pokemonList = pokemonRepository.findAll();
         if(name != null) {

@@ -31,7 +31,7 @@ public class PokemonController {
                                                                   @RequestParam(required = false) String type,
                                                                   @RequestParam(required = false) String ability,
                                                                   @RequestParam(required = false) String game){
-        var pokemon = pokemonService.findPokemonByName(name, type, ability, game);
+        var pokemon = pokemonService.findPokemonByParams(name, type, ability, game);
         if(pokemon.isEmpty()){
             return ResponseEntity.status(404).body(pokemon);
         }
