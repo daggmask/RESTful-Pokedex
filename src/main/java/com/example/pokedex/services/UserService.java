@@ -4,6 +4,7 @@ import com.example.pokedex.entities.User;
 import com.example.pokedex.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,9 +36,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the user by id %s.", id)));
+    public String getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
@@ -54,11 +56,8 @@ public class UserService {
     public void update(String id, User user) {
         if(!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the user by id %s.", id));
-        }else{
-            User foundUser = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the user by id %s.", id)));
-            if(!foundUser.getName().equals(user.getName())){
+        }else if(!getCurrentUser().equals(user.getName())){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't change other's user information");
-            }
         }
         user.setId(id);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
